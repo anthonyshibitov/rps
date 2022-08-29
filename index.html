@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function getComputerChoice(){
+            let choice = Math.floor((Math.random() * 10) % 3);
+            switch(choice){
+                case 0:
+                    choice = 'rock';
+                    break;
+                case 1:
+                    choice = 'paper';
+                    break;
+                case 2:
+                    choice = 'scissors';
+                    break;
+            }
+            return choice;
+        }
+
+        function playRound(playerChoice, computerChoice){
+            playerChoice = playerChoice.toLowerCase();
+            if(playerChoice === computerChoice) return ['Draw', 2];
+
+            if(playerChoice === 'rock' && computerChoice === 'paper') return ['You lose. Paper beats rock.', 0];
+            if(playerChoice === 'rock' && computerChoice === 'scissors') return ['You win. Rock beats scissors.' ,1];
+
+            if(playerChoice === 'paper' && computerChoice === 'rock') return ['You win. Paper beats rock.', 1];
+            if(playerChoice === 'paper' && computerChoice === 'scissors') return ['You lose. Scissors beats paper', 0];
+
+            if(playerChoice === 'scissors' && computerChoice === 'paper') return ['You win. Scissors beats paper.', 1];
+            if(playerChoice === 'scissors' && computerChoice === 'rock') return ['You lose. Rock beats scissors', 0];
+
+            return null;
+        }
+
+        function game(){
+            let playerScore = 0;
+            let computerScore = 0;
+            for(let i = 0; i < 5; i++){
+                let playerInput = prompt();
+                let result = playRound(playerInput, getComputerChoice());
+                console.log(result[0]);
+                if(result[1] == 1){
+                    playerScore++;
+                } else if(result[1] == 0) {
+                    computerScore++;
+                }
+                console.log(`Player: ${playerScore}, Computer: ${computerScore}.`);
+            }
+        }
+    </script>
+</body>
+</html>
