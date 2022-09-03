@@ -7,6 +7,12 @@
     <title>Document</title>
 </head>
 <body>
+    <div class="results"></div>
+    <button type="button" class="rock-btn">Rock</button>
+    <button type="button" class="paper-btn">Paper</button>
+    <button type="button" class="scissors-btn">Scissors</button>
+    <button type="button" class="retry" style="display: none;">Retry?</button>
+
     <script>
         function getComputerChoice(){
             let choice = Math.floor((Math.random() * 10) % 3);
@@ -40,21 +46,66 @@
             return null;
         }
 
-        function game(){
-            let playerScore = 0;
-            let computerScore = 0;
-            for(let i = 0; i < 5; i++){
-                let playerInput = prompt();
-                let result = playRound(playerInput, getComputerChoice());
-                console.log(result[0]);
-                if(result[1] == 1){
-                    playerScore++;
-                } else if(result[1] == 0) {
-                    computerScore++;
-                }
-                console.log(`Player: ${playerScore}, Computer: ${computerScore}.`);
+        let playerScore = 0;
+        let computerScore = 0;
+        let playState = true;   
+
+        const rock = document.querySelector('.rock-btn');
+        rock.addEventListener('click', () => {
+            if (!playState) return;
+            const result = playRound('rock', getComputerChoice());
+            game(result);
+        });
+
+        const paper = document.querySelector('.paper-btn');
+        paper.addEventListener('click', () => {
+            if (!playState) return;
+            const result = playRound('paper', getComputerChoice());
+            game(result);
+        });
+
+        const scissors = document.querySelector('.scissors-btn');
+        scissors.addEventListener('click', () => {
+            if (!playState) return;
+            const result = playRound('scissors', getComputerChoice());
+            game(result);
+        });
+
+        const retry = document.querySelector('.retry');
+        retry.addEventListener('click', () => {
+            playState = true;
+            computerScore = 0;
+            playerScore = 0;
+            resultDiv.textContent = "";
+            retry.setAttribute('style', 'display: none;');
+        });
+
+        let resultDiv = document.querySelector('.results');
+        resultDiv.setAttribute('style', 'white-space: pre;');
+
+        function game(result){
+            if(result[1] == 1){
+                playerScore++;
+            } else if(result[1] == 0) {
+                computerScore++;
+            }
+            resultDiv.textContent = result[0] + "\r\n";
+            //resultDiv.innerHTML += "<br />";
+            resultDiv.textContent += `Your score: ${playerScore}. Computer score: ${computerScore}`;
+            if(playerScore === 5){
+                resultDiv.textContent += "\r\nYou win!!";
+                playState = false;
+                document.querySelector(".retry").setAttribute('style', 'display: block;');
+            }
+            if(computerScore === 5) {
+                resultDiv.textContent += "\r\nYou lose!!";
+                playState = false;
+                document.querySelector(".retry").setAttribute('style', 'display: block;')
             }
         }
     </script>
+
+    
+
 </body>
 </html>
